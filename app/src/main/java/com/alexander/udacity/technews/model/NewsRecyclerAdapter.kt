@@ -30,7 +30,7 @@ class NewsRecyclerAdapter(val context: Context, val articles: MutableList<NewsAr
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
-        val articleView = mLayoutInflater.inflate(R.layout.list_item_news, parent)
+        val articleView = mLayoutInflater.inflate(R.layout.list_item_news, parent, false)
         return NewsViewHolder(articleView, readMoreClickListener)
     }
 
