@@ -1,7 +1,8 @@
-package com.alexander.udacity.technews
+package com.alexander.udacity.technews.controller
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.alexander.udacity.technews.R
 
 class MainActivity : AppCompatActivity() {
 
