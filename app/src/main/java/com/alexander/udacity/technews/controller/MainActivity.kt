@@ -4,10 +4,12 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.view.View
 import android.widget.Toast
 import com.alexander.udacity.technews.R
 import com.alexander.udacity.technews.model.NewsArticle
 import com.alexander.udacity.technews.model.NewsRecyclerAdapter
+import kotlinx.android.synthetic.main.activity_main.label_empty_list
 import kotlinx.android.synthetic.main.activity_main.list_news_feeds
 
 class MainActivity : AppCompatActivity(), NewsRecyclerAdapter.OnReadMoreClickListener {
@@ -19,6 +21,8 @@ class MainActivity : AppCompatActivity(), NewsRecyclerAdapter.OnReadMoreClickLis
         list_news_feeds.adapter = NewsRecyclerAdapter(this, ArrayList<NewsArticle>(), this)
         list_news_feeds.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         list_news_feeds.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
+
+        label_empty_list.visibility = View.GONE
     }
 
     override fun onClickReadMore(articleURL: String) {

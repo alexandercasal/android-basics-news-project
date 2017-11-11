@@ -29,4 +29,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_main" />
+
+    <TextView
+        android:id="@+id/label_empty_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/list_news_feeds"
+        app:layout_constraintEnd_toEndOf="@+id/list_news_feeds"
+        app:layout_constraintStart_toStartOf="@+id/list_news_feeds"
+        app:layout_constraintTop_toTopOf="@+id/list_news_feeds"
+        tools:text="No news, please try again later!" />
 </android.support.constraint.ConstraintLayout>
