@@ -15,7 +15,7 @@ import java.util.Date
 /**
  * Adapter to display news articles
  */
-class NewsRecyclerAdapter(val context: Context, val articles: MutableList<NewsArticle>,
+class NewsRecyclerAdapter(context: Context, val articles: MutableList<NewsArticle>,
                           val readMoreClickListener: OnReadMoreClickListener)
     : RecyclerView.Adapter<NewsRecyclerAdapter.NewsViewHolder>() {
 
@@ -36,6 +36,20 @@ class NewsRecyclerAdapter(val context: Context, val articles: MutableList<NewsAr
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         holder.bindArticle(articles[position])
+    }
+
+    /**
+     * Removes all articles from the adapter
+     */
+    fun clear() {
+        articles.clear()
+    }
+
+    /**
+     * Appends the provided list of articles to the current list of articles
+     */
+    fun addAll(articles: MutableList<NewsArticle>) {
+        this.articles.addAll(articles)
     }
 
     class NewsViewHolder(itemView: View, val readMoreClickListener: OnReadMoreClickListener)
