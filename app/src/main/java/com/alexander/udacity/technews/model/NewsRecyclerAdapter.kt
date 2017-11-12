@@ -43,6 +43,7 @@ class NewsRecyclerAdapter(context: Context, val articles: MutableList<NewsArticl
      */
     fun clear() {
         articles.clear()
+        notifyDataSetChanged()
     }
 
     /**
@@ -50,6 +51,7 @@ class NewsRecyclerAdapter(context: Context, val articles: MutableList<NewsArticl
      */
     fun addAll(articles: MutableList<NewsArticle>) {
         this.articles.addAll(articles)
+        notifyDataSetChanged()
     }
 
     class NewsViewHolder(itemView: View, val readMoreClickListener: OnReadMoreClickListener)
@@ -62,8 +64,12 @@ class NewsRecyclerAdapter(context: Context, val articles: MutableList<NewsArticl
         val buttonReadMore = itemView.findViewById<Button>(R.id.button_read_more)
 
         fun bindArticle(article: NewsArticle) {
-            articleImage.setImageBitmap(article.articleImage)
-            articleAuthor.text = "${article.articleAuthor} - "
+            if (article.articleImage != null) {
+                articleImage.setImageBitmap(article.articleImage)
+            }
+            articleAuthor.text = article.articleAuthor?.let {
+                "$it - "
+            } ?: ""
             articlePublishDate.text = formatTimestamp(article.publishDate)
             articleTitle.text = article.articleTitle
             articleDescription.text = article.articleDescription
@@ -73,7 +79,7 @@ class NewsRecyclerAdapter(context: Context, val articles: MutableList<NewsArticl
         }
 
         private fun formatTimestamp(date: Date): String {
-            val formatter = SimpleDateFormat("MM/dd/yyyy, HH:mm:ss a")
+            val formatter = SimpleDateFormat("MM/dd/yyyy, h:mm a")
             return formatter.format(date)
         }
     }

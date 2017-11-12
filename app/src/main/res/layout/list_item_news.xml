@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/image_article"
         android:layout_width="0dp"
-        android:layout_height="112dp"
+        android:layout_height="168dp"
         android:background="@mipmap/ic_launcher_round"
         android:contentDescription="@string/article_image"
         android:scaleType="centerCrop"
