@@ -1,11 +1,14 @@
 package com.alexander.udacity.technews.controller
 
 import android.app.LoaderManager
+import android.content.Intent
 import android.content.Loader
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.alexander.udacity.technews.R
@@ -19,6 +22,7 @@ import kotlinx.android.synthetic.main.activity_main.list_news_feeds
 class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<MutableList<NewsArticle>>,
         NewsRecyclerAdapter.OnReadMoreClickListener {
 
+    private val TAG = MainActivity::class.java.simpleName
     private val LOADER_NEWS_ARTICLES = 1
     private lateinit var mNewsAdapter: NewsRecyclerAdapter
 
@@ -37,7 +41,20 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<MutableL
     }
 
     override fun onClickReadMore(articleURL: String) {
-        Toast.makeText(this, articleURL, Toast.LENGTH_LONG).show()
+        if (articleURL.startsWith("http://") || articleURL.startsWith("https://")) {
+            try {
+                val uri = Uri.parse(articleURL)
+                val readMoreIntent = Intent(Intent.ACTION_VIEW, uri)
+                if (readMoreIntent.resolveActivity(packageManager) != null) {
+                    startActivity(readMoreIntent)
+                    return
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, e.message, e)
+            }
+        }
+
+        Toast.makeText(this, "Unable to open article", Toast.LENGTH_SHORT).show()
     }
 
     override fun onCreateLoader(id: Int, p1: Bundle?): Loader<MutableList<NewsArticle>>? {
