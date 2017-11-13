@@ -12,6 +12,8 @@ import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import com.alexander.udacity.technews.R
@@ -64,6 +66,21 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<MutableL
         }
 
         return false
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.menu_item_settings) {
+            val settingsIntent = Intent(this, SettingsActivity::class.java)
+            startActivity(settingsIntent)
+            return true
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onClickReadMore(articleURL: String) {
