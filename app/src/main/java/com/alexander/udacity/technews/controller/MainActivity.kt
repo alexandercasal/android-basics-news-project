@@ -1,8 +1,11 @@
 package com.alexander.udacity.technews.controller
 
 import android.app.LoaderManager
+import android.content.Context
 import android.content.Intent
 import android.content.Loader
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -18,6 +21,7 @@ import com.alexander.udacity.technews.model.NewsArticleAsyncLoader
 import com.alexander.udacity.technews.model.NewsRecyclerAdapter
 import kotlinx.android.synthetic.main.activity_main.label_empty_list
 import kotlinx.android.synthetic.main.activity_main.list_news_feeds
+import kotlinx.android.synthetic.main.activity_main.progress_load_news
 
 class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<MutableList<NewsArticle>>,
         NewsRecyclerAdapter.OnReadMoreClickListener {
@@ -36,8 +40,27 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<MutableL
         list_news_feeds.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
 
         label_empty_list.visibility = View.GONE
+        progress_load_news.visibility = View.GONE
 
-        loaderManager.initLoader(LOADER_NEWS_ARTICLES, null, this)
+        if (hasInternetConnection()) {
+            label_empty_list.visibility = View.GONE
+            label_empty_list.text = ""
+            loaderManager.initLoader(LOADER_NEWS_ARTICLES, null, this)
+        } else {
+            label_empty_list.text = getString(R.string.no_internet)
+            label_empty_list.visibility = View.VISIBLE
+        }
+
+    }
+
+    private fun hasInternetConnection(): Boolean {
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork:NetworkInfo? = connectivityManager.activeNetworkInfo
+        if (activeNetwork != null && activeNetwork.isConnectedOrConnecting) {
+            return true
+        }
+
+        return false
     }
 
     override fun onClickReadMore(articleURL: String) {
@@ -60,6 +83,7 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<MutableL
     override fun onCreateLoader(id: Int, p1: Bundle?): Loader<MutableList<NewsArticle>>? {
         return when (id) {
             LOADER_NEWS_ARTICLES -> {
+                progress_load_news.visibility = View.VISIBLE
                 return NewsArticleAsyncLoader(this, BASE_URL)
             }
             else -> null
@@ -69,10 +93,15 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<MutableL
     override fun onLoadFinished(loader: Loader<MutableList<NewsArticle>>, data: MutableList<NewsArticle>?) {
         when (loader.id) {
             LOADER_NEWS_ARTICLES -> {
+                progress_load_news.visibility = View.GONE
                 mNewsAdapter.clear()
 
                 if (data != null && data.isNotEmpty()) {
                     mNewsAdapter.addAll(data)
+                    label_empty_list.visibility = View.GONE
+                } else {
+                    label_empty_list.text = getString(R.string.no_news)
+                    label_empty_list.visibility = View.VISIBLE
                 }
             }
         }
