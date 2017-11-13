@@ -22,6 +22,7 @@ import com.alexander.udacity.technews.model.NewsRecyclerAdapter
 import kotlinx.android.synthetic.main.activity_main.label_empty_list
 import kotlinx.android.synthetic.main.activity_main.list_news_feeds
 import kotlinx.android.synthetic.main.activity_main.progress_load_news
+import kotlinx.android.synthetic.main.activity_main.toolbar_main
 
 class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<MutableList<NewsArticle>>,
         NewsRecyclerAdapter.OnReadMoreClickListener {
@@ -33,6 +34,8 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<MutableL
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        setSupportActionBar(toolbar_main)
 
         mNewsAdapter = NewsRecyclerAdapter(this, ArrayList<NewsArticle>(), this)
         list_news_feeds.adapter = mNewsAdapter
