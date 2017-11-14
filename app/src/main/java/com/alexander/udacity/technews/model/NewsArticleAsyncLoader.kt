@@ -26,7 +26,7 @@ class NewsArticleAsyncLoader(context: Context, val url: String) : AsyncTaskLoade
 
     override fun loadInBackground(): MutableList<NewsArticle> {
         var articles: MutableList<NewsArticle>
-        val articlesJson = NetworkUtils.MakeHttpsRequest("$url?source=ars-technica&sortBy=top&apiKey=$API_KEY")
+        val articlesJson = NetworkUtils.MakeHttpsRequest(url)
 
         if (articlesJson != null) {
             articles = extractArticlesFromJSON(articlesJson)

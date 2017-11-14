@@ -9,6 +9,7 @@ import android.net.NetworkInfo
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
@@ -17,6 +18,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import com.alexander.udacity.technews.R
+import com.alexander.udacity.technews.model.API_KEY
 import com.alexander.udacity.technews.model.BASE_URL
 import com.alexander.udacity.technews.model.NewsArticle
 import com.alexander.udacity.technews.model.NewsArticleAsyncLoader
@@ -104,7 +106,20 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<MutableL
         return when (id) {
             LOADER_NEWS_ARTICLES -> {
                 progress_load_news.visibility = View.VISIBLE
-                return NewsArticleAsyncLoader(this, BASE_URL)
+
+                val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+                val sortBy = sharedPreferences.getString(
+                        getString(R.string.settings_sort_by_key),
+                        getString(R.string.settings_sort_by_default)
+                )
+
+                val uri = Uri.parse(BASE_URL)
+                val uriBuilder = uri.buildUpon()
+                uriBuilder.appendQueryParameter("source", "ars-technica")
+                uriBuilder.appendQueryParameter("sortBy", sortBy)
+                uriBuilder.appendQueryParameter("apiKey", API_KEY)
+
+                return NewsArticleAsyncLoader(this, uriBuilder.toString())
             }
             else -> null
         }

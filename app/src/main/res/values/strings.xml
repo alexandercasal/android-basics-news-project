@@ -18,4 +18,5 @@
         <item>latest</item>
         <item>popular</item>
     </string-array>
+    <string name="settings_sort_by_default">top</string>
 </resources>
